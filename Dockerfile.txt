@@ -1,0 +1,24 @@
+FROM r-base
+
+RUN apt-get update && apt-get install -y libssl-dev libcurl4-openssl-dev libxml2-dev openjdk-8-jdk firefox
+
+RUN R -e "Sys.setenv('NOT_CRAN' = TRUE); install.packages(c('digest', 'dplyr', 'lubridate', 'httr', 'RCurl', 'rvest', 'RSelenium', 'textdata', 'tidyr', 'tidytext', 'tokenizers', 'urltools', 'uuid')); install.packages('arrow', repos = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest');"
+
+
+# Download 
+RUN mkdir -p "/root/.local/share/binman_geckodriver/linux64/0.31.0" && \
+    wget -P "/root/.local/share/binman_geckodriver/linux64/0.31.0" "https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz" && \
+    wget -P "/root/.local/share/binman_geckodriver/linux64/0.31.0" "https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz.asc" && \
+    tar -C "/root/.local/share/binman_geckodriver/linux64/0.31.0" -xf "/root/.local/share/binman_geckodriver/linux64/0.31.0/geckodriver-v0.31.0-linux64.tar.gz"
+
+ENV APP_SRC_DIR     /app/src
+ENV APP_DATA_DIR    /app/data
+
+RUN mkdir -p $APP_SRC_DIR
+RUN mkdir -p $APP_DATA_DIR
+
+COPY ./scripts/      $APP_SRC_DIR/
+
+WORKDIR $APP_SRC_DIR
+
+CMD ["Rscript", "scraper.r"]
