@@ -1,3 +1,12 @@
+library(dplyr)
+library(lubridate)
+library(rjson)
+library(RCurl)
+
+srcDir = Sys.getenv("APP_SRC_DIR")
+
+source(paste(srcDir, "scripts", "./utils.r", sep="/"))
+
 # Code to work with News.API augmenting Google News from Google search
 
 fnGetNewsFromNewsAPIByDay <- function(date, sSearchTerms, pageSize){
