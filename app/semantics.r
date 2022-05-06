@@ -78,7 +78,8 @@ fnGetEntityTypeDescription <- function(){
     "CARDINAL", "Numerals that do not fall under another type."
   )
   
-  as_tibble(t(matrix(cEntityTypeDesc, nrow=2)),)  %>% rename(Type=V1,Description=V2)
+  as_tibble(t(matrix(cEntityTypeDesc, nrow=2)),)  %>% 
+    rename(Type=V1,Description=V2)
 }
 
 fnPlotEntitiesByType <- function(dfInEntities, topN){

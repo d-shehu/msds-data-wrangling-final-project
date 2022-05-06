@@ -28,13 +28,13 @@ fnPlotSources <- function(dfInMetaData){
     theme(legend.title=element_blank())
 }
 
-fnPlotSourceContribution <- function(dfInMetaData, dfInStats){
+fnPlotSourceContribution <- function(dfInMetaData, dfInStats, topN){
   dfUnique <- merge(dfInStats, dfInMetaData, by="id") %>% 
     select(source, num_unique_words) %>% 
     group_by(source) %>% 
     summarize(total_unique=sum(num_unique_words)) %>% 
     arrange(desc(total_unique)) %>%
-    head(20)
+    head(topN)
   
   ggplot(data=dfUnique, aes(x=source, y=total_unique, fill=source)) +
     geom_bar(width = 1, stat = "identity") + 
@@ -64,9 +64,11 @@ fnGetTopNByDay <- function(dfInMetaData, dfInStats, topN){
     slice_max(order_by = unique_words_day, n = topN)
 }
 
-fnPlotDailyCoverage <- function(dfInMetaData, dfInStats, topN){
-  fnGetTopNByDay(dfInMetaData, dfInStats, 5) %>% 
+fnPlotDailyCoverage <- function(dfInMetaData, dfInStats, topN, nLegendCols){
+  fnGetTopNByDay(dfInMetaData, dfInStats, topN) %>% 
     ggplot(aes(x=published, y=unique_words_day, fill=source, group=source)) +
     geom_bar(width = 1, stat = "identity") +
-    guides(fill=guide_legend(ncol=3))
+    ylab("# Unique Words") +
+    ggtitle("Contribution to Corpus Per Day") +
+    guides(fill=guide_legend(ncol=nLegendCols))
 }

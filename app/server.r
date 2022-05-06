@@ -217,7 +217,7 @@ server <- function(input, output, session) {
 
   output$sourceContribution <- renderPlot({
     req(nrow(FilteredMetaData()) > 0 & length(FilteredDataSet()) > 0)
-    fnPlotSourceContribution(FilteredMetaData(), FilteredDataSet()$dfAllStats)
+    fnPlotSourceContribution(FilteredMetaData(), FilteredDataSet()$dfAllStats, 20)
   })
 
   # Calculate some basic (summary statistic on the source)
@@ -230,7 +230,7 @@ server <- function(input, output, session) {
   # News Coverage by Day
   output$sourceDailyCoverage <- renderPlot({
     req(nrow(FilteredMetaData()) > 0 & length(FilteredDataSet()) > 0)
-    fnPlotDailyCoverage(FilteredMetaData(), FilteredDataSet()$dfAllStats, 10)
+    fnPlotDailyCoverage(FilteredMetaData(), FilteredDataSet()$dfAllStats, 10, 3)
   })
   
   #######################

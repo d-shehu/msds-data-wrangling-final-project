@@ -5,6 +5,9 @@
 #
 ################################################################################
 
+library(arrow)
+library(dplyr)
+
 ##############################################################################
 # Data routines for loading parquet files from S3 and utility functions
 # common to the whole application.

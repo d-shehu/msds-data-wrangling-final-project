@@ -22,9 +22,9 @@ fnGetTopWords <- function(dfInMetaData, dfInTerms, topN){
 
 fnGetTopTrigrams <- function(dfInMetaData, dfInTrigrams, topN){
   merge(dfInTrigrams, dfInMetaData, by="id") %>%
-    group_by(trigram,source) %>% summarise(n=n()) %>%
-    group_by(trigram) %>% summarize(total=sum(n),sources=n()) %>%
-    arrange(desc(total), desc(sources)) %>%
+    group_by(trigram) %>% summarise(n=n()) %>%
+    group_by(trigram) %>% summarize(total=sum(n)) %>%
+    arrange(desc(total)) %>%
     head(topN)
 }
 
